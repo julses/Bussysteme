@@ -8,6 +8,23 @@
 \onehalfspacing
 % ==============================================
 
+%%%%% Abbildungsverzeichnis
+\listoffigures
+\addcontentsline{toc}{chapter}{\protect\numberline{}{Abbildungsverzeichnis}} % Nicht nummerierter TOC Eintrag
+\newpage
+% ==============================================
+
+%%%%% Tabellenverzeichnis
+\listoftables
+\addcontentsline{toc}{chapter}{\protect\numberline{}{Tabellenverzeichnis}} % Nicht nummerierter TOC Eintrag
+\newpage
+% ==============================================
+
+%%%%% Listings
+%\lstlistoflistings
+%\addcontentsline{toc}{chapter}{\protect\numberline{}{Listings}} % Nicht nummerierter TOC Eintrag
+% ==============================================
+
 %%%%% Vorwort
 % ==============================================
 \include{content/0-Vorwort}
@@ -35,23 +52,5 @@
 
 %\pagenumbering{Roman}
 %\setcounter{page}{5}
-
-
-%%%%% Abbildungsverzeichnis
-\listoffigures
-\addcontentsline{toc}{chapter}{\protect\numberline{}{Abbildungsverzeichnis}} % Nicht nummerierter TOC Eintrag
-\newpage
-% ==============================================
-
-%%%%% Tabellenverzeichnis
-\listoftables
-\addcontentsline{toc}{chapter}{\protect\numberline{}{Tabellenverzeichnis}} % Nicht nummerierter TOC Eintrag
-\newpage
-% ==============================================
-
-%%%%% Listings
-\lstlistoflistings
-\addcontentsline{toc}{chapter}{\protect\numberline{}{Listings}} % Nicht nummerierter TOC Eintrag
-% ==============================================
 
 \end{document}
