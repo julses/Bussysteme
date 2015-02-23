@@ -1,4 +1,4 @@
-\chapter{Grundlagen}
+%\chapter{Grundlagen}
 
 
 
@@ -107,8 +107,39 @@ Speziell bei Bussystemen zu lösende Aufgaben:
 \begin{itemize}
 \item Medienzugriff
 \item Adressierung
+\item Synchronisierung zwischen Sender und Empfänger
 \end{itemize}
 % =================================================
+
+
+\section{Allgemeine Anforderungen/Aufgaben}
+\begin{itemize}
+\item Übertragung
+\begin{itemize}
+\item synchron $=$ getaktet
+Die Übertragung findet in einem festen Zeitraster statt, d.h. zwischen zwei aufeinanderfolgenden Übertragungen vergeht immer dieselbe Zeit ($\Rightarrow$ Takt).
+\item Beispiele für synchron:
+\begin{itemize}
+\item  RS232 (serielle Schnittstelle)\\
+Takt: Baudrate, d.h. Schritte pro Sekunde\\
+in jedemSchritt wird maximal ein bit übertragen\\
+$\Rightarrow$ (bit-)serielle Schnittstelle\\
+$\Rightarrow$ bitrate <= Baudrate\\
+Möglichkeiten zu getakteter Übertragung:
+\begin{itemize}
+\item Taktleitung
+\item verbindliche Vereinbarung (hier verwendet) dann aber notwendig:\\
+Erstsynchronisation zu Beginn, danach regelmäßige Nachsynchronisation (wegen Ungenauigkeit der Taktgeber)\\
+Eine Signalleitung für jede Richtung ist ausreichend\\
+Signale: elektrische Spannung
+\end{itemize}
+\item asynchron $=$ bedarfsgesteuert
+Jede Übertragung beginnt unabhängig vom Zeitpunkt der vorherigen Übertragung, d.h. dann, wenn beide zur Übertragung bereit sind.
+\item Beispiele für asynchron:
+\end{itemize}
+\end{itemize}
+\end{itemize}
+
 
 \section{Entwicklung eines Medienzugriffsverfahrens am Bsp. CSMA/CD}
 \begin{description}
@@ -180,38 +211,61 @@ Zur sicheren Kollisionserkennung muss die Mindestlänge eines Paketes auch und g
 \end{itemize}
 \end{description}
 
-\section{Bussysteme}
-Bus $\equiv$ Rundsendungsmedium
-Aufgaben: 
+\section{Exkurs: elektrische Signale}
+In der Leitung fällt Spannung aufgrund des vorhandenen Leitungswiderstandes $\neq 0$ ab.
+\par
+\begin{center}
+$\frac{V_{Leitung}}{V_{Empfaenger}} = \frac{R_{Leitung}}{R_{Empfänger}}$\\
+\end{center}$\Rightarrow$möglichst geringer Leitungswiderstand, möglichst großer Innenwiderstand beim Empfänger
+Strom: 
 \begin{itemize}
-\item Medienzugriff
-\item Adressierung
-\item Synchronisierung zwischen Sender und Empfänger
+\item[+]unempfindlich gegen große Abstände
+\item[-]energieintensiver
+\item[+]unempfindlicher gegen EMV-Einstrahlung
+\item[-]produziert mehr Störungsstrahlung auf andere Leitungen
+\end{itemize}
+bei hohen Spannungen: Vor/Nachteile wie bei Strom, zusätzlich:
+\begin{itemize}
+\item[-]Umschalten dauert länger (wegen kapazitiver Wirkung der Leitung)
 \end{itemize}
 
-\section{Allgemeine Anforderungen/Aufgaben}
-\begin{itemize}
-\item Übertragung
-\begin{itemize}
-\item synchron $=$ getaktet
-Die Übertragung findet in einem festen Zeitraster statt, d.h. zwischen zwei aufeinanderfolgenden Übertragungen vergeht immer dieselbe Zeit ($\Rightarrow$ Takt).
-\item Beispiele für synchron:
-\begin{itemize}
-\item  RS232 (serielle Schnittstelle)\\
-Takt: Baudrate, d.h. Schritte pro Sekunde\\
-in jedemSchritt wird maximal ein bit übertragen\\
-$\Rightarrow$ (bit-)serielle Schnittstelle\\
-$\Rightarrow$ bitrate <= Baudrate\\
-Möglichkeiten zu getakteter Übertragung:\\
-- Taktleitung\\
-- verbindliche Vereinbarung (hier verwendet) dann aber notwendig:\\ Erstsynchronisation zu Beginn, danach regelmäßige Nachsynchronisation\\ (wegen Ungenauigkeit der Taktgeber)\\
-Eine Signalleitung für jede Richtung ausreichend\\
-Signale: elektrische Spannung
-
-\end{itemize}
-\item asynchron $=$ bedarfsgesteuert
-Jede Übertragung beginnt unabhängig vom Zeitpunkt der vorherigen Übertragung, d.h. dann, wenn beide zur Übertragung bereit sind.
-\item Beispiele für asynchron:
-
-	\end{itemize}
-\end{itemize}
+\section{RS232}
+Eine Signalleitung für jede Richtung ausreichend.\\
+Signale: elektrisch\\
+Spannung $0\hat{=}12V, 1\hat{=}-12V$
+\par
+\begin{description}
+\item[Ruhepegel:]Wenn der Sender nichts zu senden hat, legt er einen "1"-Pegel auf die Leitung
+\item[Startbit:]Mit einem "0"-bit für genau eine definierte Schrittzeit (siehe Baudrate) wird die Übertragung "erstsynchronisiert"
+\item[Datenbit:](zwischen 5 und 8 bit konfigurierbar) Anzahl der bit, welche ein Wort ausmachen\dots maximal 8bit=1Byte
+\item[Paritätsbit:](optional, gerade oder ungerade Parität konfigurierbar)
+\item[Stoppbits:](ein oder zwei Stoppbits konfigurierbar)Art “künstlicher Ruhepegel”, also “1”, um die Synchronisation durch das nachfolgende Startbit sicher zu ermöglichen.
+\end{description}
+$\Rightarrow$ während des "Wortes" (Datenbits+Paritätsbit) ist keine Nachsynchronisation gewährleistet\\
+$\Rightarrow$ Uhr muss während dieser Zeit hinreichende Genauigkeit bieten\dots\\
+\dots wie stark darf die Uhr abweichen?\\
+Der Empfänger misst den Pegel genau in der Mitte der von ihm angenommenen Schrittzeit.\\
+Die Abweichung der beiden Uhren voneinander darf max. $\frac{1}{2}$ Bitzeit betragen.\\
+Die max. Abweichung jeder Uhr von der “Normzeit” ist damit nur $\frac{1}{4}$ Bitzeit!\\
+Diese Abweichung darf während des Startbits, der (max) 8 Datenbits und dem (optionalen) Paritätsbit = 10 Bitzieten nicht auftreten.
+\begin{center}
+$Abweichung < \frac{\frac{1}{4}}{10}=2,5\%$
+\end{center}
+$\Rightarrow$ die RS232 arbeitet während eines Wortes (von Startbit bis zum Stoppbit) bit-synchron
+\par
+Das nächste Wort wird mit dem Startbit unabhängig vom vorangegangenen Wort dann begonnen, wenn notwendig\\
+$\Rightarrow$die RS232 arbeitet Wort-asynchron\\
+\textbf{Fazit:} synchron und asynchron schließen sich gegenseitig nicht aus!
+\par
+\begin{description}
+\item[seriell:] die einzelnen Informationsbestandteile (~z.B. bit) werden nacheinander übertragen
+\item[parallel:] mehrere Informationsbestandteile (~z.B. bit) werden gleichzeitig übertragen
+\item[~z.B. bit-parallel:] 8 Leitungen für 8 bit gleichzeitig, aber mehrere Byte müssen nacheinander übertragen werden, d.h. Byte-seriell
+\item[Fazit:] serielle und parallele Arbeitsweise schließen sich gegenseitig nicht aus!
+\end{description}
+Synchronisierung bei der asynchron arbeitenden parallelen Schnittstelle (Centronics-Schnittstelle)\\
+8 Datenleitungen für 8 gleichübertragene Datenbit; d.h. bitparallel und Byte-seriell; aufeinanderfolgende Bytes werden nacheinander und asynchron zueinander übertragen (also nicht in einem festen Zeitraster)
+\par
+TTL-Pegel, d.h. 1\hat{=}5V und 0\hat{=}0V
+\par
+zur Anzeige, ob Daten anliegen, wird eine weitere “Handshake-”Leitung gebraucht $\Rightarrow$ "Valid" von Sender zum Empfänger zeigt an, ob gültige Daten anliegen.
