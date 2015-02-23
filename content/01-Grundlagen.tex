@@ -178,5 +178,40 @@ Zur sicheren Kollisionserkennung muss die Mindestlänge eines Paketes auch und g
 \item[]für jede Übertragungsrichtung zwischen jeweils zwei Geräten (Endgerät oder Switch -  kein HUB erlaubt) gibt es einen eigenen Übertragungskanal $\Rightarrow$ Vollduplex $\Rightarrow$ keine Kollisionen möglich!
 \end{itemize}
 \end{itemize}
-
 \end{description}
+
+\section{Bussysteme}
+Bus $\equiv$ Rundsendungsmedium
+Aufgaben: 
+\begin{itemize}
+\item Medienzugriff
+\item Adressierung
+\item Synchronisierung zwischen Sender und Empfänger
+\end{itemize}
+
+\section{Allgemeine Anforderungen/Aufgaben}
+\begin{itemize}
+\item Übertragung
+\begin{itemize}
+\item synchron $=$ getaktet
+Die Übertragung findet in einem festen Zeitraster statt, d.h. zwischen zwei aufeinanderfolgenden Übertragungen vergeht immer dieselbe Zeit ($\Rightarrow$ Takt).
+\item Beispiele für synchron:
+\begin{itemize}
+\item  RS232 (serielle Schnittstelle)\\
+Takt: Baudrate, d.h. Schritte pro Sekunde\\
+in jedemSchritt wird maximal ein bit übertragen\\
+$\Rightarrow$ (bit-)serielle Schnittstelle\\
+$\Rightarrow$ bitrate <= Baudrate\\
+Möglichkeiten zu getakteter Übertragung:\\
+- Taktleitung\\
+- verbindliche Vereinbarung (hier verwendet) dann aber notwendig:\\ Erstsynchronisation zu Beginn, danach regelmäßige Nachsynchronisation\\ (wegen Ungenauigkeit der Taktgeber)\\
+Eine Signalleitung für jede Richtung ausreichend\\
+Signale: elektrische Spannung
+
+\end{itemize}
+\item asynchron $=$ bedarfsgesteuert
+Jede Übertragung beginnt unabhängig vom Zeitpunkt der vorherigen Übertragung, d.h. dann, wenn beide zur Übertragung bereit sind.
+\item Beispiele für asynchron:
+
+	\end{itemize}
+\end{itemize}
